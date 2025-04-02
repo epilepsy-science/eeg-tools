@@ -3,11 +3,11 @@ import shutil
 import subprocess
 import argparse
 
-def find_edf_folders(input_dir):
-    """Finds all folders containing .edf files."""
+def find_eeg_folders(input_dir):
+    """Finds all folders containing .edf or .bdf files."""
     edf_folders = set()
     for root, _, files in os.walk(input_dir):
-        if any(file.lower().endswith(".edf") for file in files):
+        if any(file.lower().endswith((".edf",".bdf")) for file in files):
             edf_folders.add(root)
     return edf_folders
 
@@ -47,7 +47,7 @@ def main(input_dir, output_dir, exe_path):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)  # Create the output directory if it doesn't exist
 
-    edf_folders = find_edf_folders(input_dir)
+    edf_folders = find_eeg_folders(input_dir)
     print(f"Found {len(edf_folders)} folders containing EDF files.")
     
     for folder in edf_folders:

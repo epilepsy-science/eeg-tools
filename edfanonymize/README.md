@@ -12,7 +12,17 @@ This script does two things:
 
 ## Building
 Requirements: gcc
+
+### Windows
+- [Install cygwin](https://www.cygwin.com/install.html)
+- On the select packages to install screen search for `gcc` and under Devel select `gcc-g++`. Under Libs select libgcc1
+- Finish the installation
+
+-----
+
 Run `gcc edf-anonymize.c -o edf-anonymize` to build the application for your platform. 
+
+Any warnings can be safetly ignored
 
 Usage example: `./edf-anonymize ./inputs/IN_001/IN_0001.edf ./temp/OUTPUT_001.edf FAKE_NAME FAKE_SUBJ_ID 04.01`
 This will write the edf to an output folder with the name, subject ID and date replaced to FAKE_NAME, FAKE_SUBJ_ID, 04.01 respectively
@@ -20,6 +30,8 @@ This will write the edf to an output folder with the name, subject ID and date r
 # Batching
 `batch_deid.sh` for *Nix environments
 `batch_deid.py` for Windows and any other environment that can run python
+
+`batch_deid.py` will also look for .bdf files, change the extension to .edf, then proceed to anonymize the files
 
 
 
