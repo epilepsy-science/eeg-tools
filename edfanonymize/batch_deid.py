@@ -52,7 +52,7 @@ def main(input_dir, output_dir, exe_path):
     
     for folder in edf_folders:
         copied_folder = copy_folder(folder, output_dir)
-        rename_bdf_to_edf(copied_folder)
+        # rename_bdf_to_edf(copied_folder)
         process_edf_files(copied_folder, exe_path)
 
 if __name__ == "__main__":
