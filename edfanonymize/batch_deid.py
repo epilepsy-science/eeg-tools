@@ -83,7 +83,7 @@ def main(input_dir, output_dir, exe_path):
     
     for folder in edf_folders:
         copied_folder = copy_folder(folder, output_dir, input_dir)
-        # process_edf_files(copied_folder, exe_path)
+        process_edf_files(copied_folder, exe_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Find and process EDF/BDF files.")
