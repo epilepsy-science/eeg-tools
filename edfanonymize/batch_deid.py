@@ -59,23 +59,16 @@ def copy_folder(src, dest, input_dir):
     shutil.copytree(src, dest_path)
     return dest_path
 
-def rename_bdf_to_edf(folder):
-    """Renames all .bdf files to .edf in the given folder."""
-    for file in os.listdir(folder):
-        if file.lower().endswith(".bdf"):
-            old_path = os.path.join(folder, file)
-            new_path = os.path.join(folder, os.path.splitext(file)[0] + ".edf")
-            os.rename(old_path, new_path)
-
 def process_edf_files(folder, exe_path):
     """Runs application.exe on all .edf files in the folder."""
     for file in os.listdir(folder):
         if file.lower().endswith((".edf", ".bdf")):
             file_path = os.path.join(folder, file)
+            file_info = os.path.splitext(file)[0]
             file_id = os.path.splitext(file)[0]
-            anonymize_comments_files(folder, file_id)
-            output_path = os.path.join(folder, file_id)
-            cmd = [exe_path, file_path, output_path + "_deid.edf", file_id, file_id]
+            anonymize_comments_files(folder, file_info[0])
+            output_path = os.path.join(folder, file_info[0])
+            cmd = [exe_path, file_path, output_path + f"_deid{file_id[1]}", file_id, file_id]
             print(f"Running: {cmd}")
             subprocess.run(cmd, shell=False, check=True)
             os.remove(file_path)
