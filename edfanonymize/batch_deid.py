@@ -65,10 +65,11 @@ def process_edf_files(folder, exe_path):
         if file.lower().endswith((".edf", ".bdf")):
             file_path = os.path.join(folder, file)
             file_info = os.path.splitext(file)[0]
-            file_id = os.path.splitext(file)[0]
-            anonymize_comments_files(folder, file_info[0])
-            output_path = os.path.join(folder, file_info[0])
-            cmd = [exe_path, file_path, output_path + f"_deid{file_id[1]}", file_id, file_id]
+            file_name = file_info[0]
+            file_ext = file_info[1]
+            anonymize_comments_files(folder, file_name)
+            output_path = os.path.join(folder, file_name)
+            cmd = [exe_path, file_path, output_path + f"_deid{file_ext}", file_name, file_name]
             print(f"Running: {cmd}")
             subprocess.run(cmd, shell=False, check=True)
             os.remove(file_path)
