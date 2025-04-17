@@ -64,7 +64,7 @@ def process_edf_files(folder, exe_path):
     for file in os.listdir(folder):
         if file.lower().endswith((".edf", ".bdf")):
             file_path = os.path.join(folder, file)
-            file_info = os.path.splitext(file)[0]
+            file_info = os.path.splitext(file)
             file_name = file_info[0]
             file_ext = file_info[1]
             anonymize_comments_files(folder, file_name)
@@ -83,7 +83,7 @@ def main(input_dir, output_dir, exe_path):
     
     for folder in edf_folders:
         copied_folder = copy_folder(folder, output_dir, input_dir)
-        process_edf_files(copied_folder, exe_path)
+        # process_edf_files(copied_folder, exe_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Find and process EDF/BDF files.")
