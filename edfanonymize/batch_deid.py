@@ -3,6 +3,35 @@ import shutil
 import subprocess
 import argparse
 
+def anonymize_comments_files(folder, base_filename):
+    """
+    Modifies .tev, .tvx, and .tvs files by overwriting:
+    Bytes 9–18 | 0-based index: 8–17 | 10 chars
+    Bytes 89–103| 0-based index: 88–102 | 15 chars
+    These numbers are inferred from patterns found across the files
+    """
+    target_extensions = ('.tev', '.tvx', '.tvs')
+
+    PATIENT_ID_OFFSET = 8
+    PATIENT_ID_LENGTH = 10
+
+    RECORD_NAME_OFFSET = 88
+    RECORD_NAME_LENGTH = 15
+
+    patient_id_field = base_filename.encode('ascii').ljust(PATIENT_ID_LENGTH, b' ')
+    record_name_field = base_filename.encode('ascii').ljust(RECORD_NAME_LENGTH, b' ')
+
+    for file in os.listdir(folder):
+        if file.lower().endswith(target_extensions):
+            file_path = os.path.join(folder, file)
+            print(f"Patching {file_path} (binary-safe)")
+            with open(file_path, 'r+b') as f:
+                f.seek(PATIENT_ID_OFFSET)
+                f.write(patient_id_field)
+                f.seek(RECORD_NAME_OFFSET)
+                f.write(record_name_field)
+
+
 def find_eeg_folders(input_dir):
     """Finds all folders containing .edf or .bdf files."""
     edf_folders = set()
@@ -44,6 +73,7 @@ def process_edf_files(folder, exe_path):
         if file.lower().endswith((".edf", ".bdf")):
             file_path = os.path.join(folder, file)
             file_id = os.path.splitext(file)[0]
+            anonymize_comments_files(folder, file_id)
             output_path = os.path.join(folder, file_id)
             cmd = [exe_path, file_path, output_path + "_deid.edf", file_id, file_id]
             print(f"Running: {cmd}")
